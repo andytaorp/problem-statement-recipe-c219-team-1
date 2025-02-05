@@ -14,7 +14,7 @@ app.use(cors());
 
 // Routes
 app.use("/api/auth", authRoutes);
-app.use("/api/recipes", recipeRoutes);
+app.use("/api/recipe", recipeRoutes);
 
 const PORT = process.env.PORT || 4000;
 mongoose
