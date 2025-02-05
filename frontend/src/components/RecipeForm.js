@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import { useRecipesContext } from '../hooks/useRecipesContext'
+import { useRecipeContext } from '../hooks/useRecipeContext'
 import { useAuthContext } from '../hooks/useAuthContext'
 
 const RecipeForm = () => {
-  const { dispatch } = useRecipesContext()
+  const { dispatch } = useRecipeContext()
   const { user } = useAuthContext()
   const [formData, setFormData] = useState({
     name: '',
@@ -26,7 +26,7 @@ const RecipeForm = () => {
       ingredients: formData.ingredients.split(',').map(ing => ing.trim())
     }
 
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/recipes`, {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/recipe`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

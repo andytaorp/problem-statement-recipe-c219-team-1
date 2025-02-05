@@ -1,12 +1,12 @@
 import { useState } from 'react'
-import { useRecipesContext } from '../hooks/useRecipesContext'
+import { useRecipeContext } from '../hooks/useRecipeContext'
 import { useAuthContext } from '../hooks/useAuthContext'
 
 // date fns
 import formatDistanceToNow from 'date-fns/formatDistanceToNow'
 
 const RecipeDetails = ({ recipe }) => {
-  const { dispatch } = useRecipesContext()
+  const { dispatch } = useRecipeContext()
   const { user } = useAuthContext()
   const [isEditing, setIsEditing] = useState(false)
   const [formData, setFormData] = useState({
@@ -22,7 +22,7 @@ const RecipeDetails = ({ recipe }) => {
       return
     }
 
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/recipes/${recipe._id}`, {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/recipe/${recipe._id}`, {
       method: 'DELETE',
       headers: { 'Authorization': `Bearer ${user.token}`
       }
@@ -39,7 +39,7 @@ const RecipeDetails = ({ recipe }) => {
   }
 
   const handleUpdate = async () => {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/recipes/${recipe._id}`, {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/recipe/${recipe._id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
