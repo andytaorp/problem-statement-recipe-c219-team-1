@@ -1,6 +1,6 @@
 import { createContext, useReducer } from 'react'
 
-export const RecipesContext = createContext()
+export const RecipeContext = createContext()
 
 export const recipesReducer = (state, action) => {
   switch (action.type) {
@@ -28,15 +28,15 @@ export const recipesReducer = (state, action) => {
 }
 
 
-export const RecipesContextProvider = ({ children }) => {
+export const RecipeContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(recipesReducer, { 
     recipes: []  
   })
   
   return (
-    <RecipesContext.Provider value={{ ...state, dispatch }}>
+    <RecipeContext.Provider value={{ ...state, dispatch }}>
       { children }
-    </RecipesContext.Provider>
+    </RecipeContext.Provider>
   )
 }
 
