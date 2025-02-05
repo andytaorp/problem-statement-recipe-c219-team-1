@@ -7,7 +7,7 @@ import RecipeDetails from '../components/RecipeDetails'
 import RecipeForm from '../components/RecipeForm'
 
 const Home = () => {
-  const {Recipe, dispatch} = useRecipeContext()
+  const {recipe, dispatch} = useRecipeContext()
   const {user} = useAuthContext()
 
   useEffect(() => {
@@ -17,7 +17,11 @@ const Home = () => {
       })
       const json = await response.json()
 
+      console.log("response: ", response);
+
       if (response.ok) {
+        console.log("response ok");
+        console.log("json: ", json)
         dispatch({type: 'SET_RECIPE', payload: json})
       }
     }
@@ -30,8 +34,9 @@ const Home = () => {
   return (
     <div className="home">
       <div className="recipe">
-        {Recipe && Recipe.map((recipe) => (
-          <RecipeDetails key={Recipe._id} Recipe={Recipe} />
+        <p>Recipes details</p>
+        {recipe && recipe.map((r) => (
+          <RecipeDetails key={r._id} recipe={r} />
         ))}
       </div>
       <RecipeForm />
