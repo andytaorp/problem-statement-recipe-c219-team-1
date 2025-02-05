@@ -39,7 +39,7 @@ const RecipeDetails = ({ recipe }) => {
   }
 
   const handleUpdate = async () => {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/recipe/${recipe._id}`, {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/recipes/${recipe._id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
