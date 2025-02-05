@@ -1,18 +1,20 @@
 import { useState } from 'react'
-import { useWorkoutsContext } from '../hooks/useWorkoutsContext'
+import { useRecipesContext } from '../hooks/useRecipesContext'
 import { useAuthContext } from '../hooks/useAuthContext'
 
 // date fns
 import formatDistanceToNow from 'date-fns/formatDistanceToNow'
 
-const WorkoutDetails = ({ workout }) => {
-  const { dispatch } = useWorkoutsContext()
+const RecipeDetails = ({ recipe }) => {
+  const { dispatch } = useRecipesContext()
   const { user } = useAuthContext()
   const [isEditing, setIsEditing] = useState(false)
   const [formData, setFormData] = useState({
-    title: workout.title,
-    load: workout.load,
-    reps: workout.reps
+    name: recipe.name,
+    ingredients: recipe.ingredients,
+    instructions: recipe.instructions,
+    prepTime: recipe.prepTime,
+    difficulty: recipe.difficulty
   })
 
   const handleDelete = async () => {
@@ -20,7 +22,7 @@ const WorkoutDetails = ({ workout }) => {
       return
     }
 
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/workouts/${workout._id}`, {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/recipes/${recipe._id}`, {
       method: 'DELETE',
       headers: { 'Authorization': `Bearer ${user.token}`
       }
@@ -28,7 +30,7 @@ const WorkoutDetails = ({ workout }) => {
     const json = await response.json()
 
     if (response.ok) {
-      dispatch({type: 'DELETE_WORKOUT', payload: json})
+      dispatch({type: 'DELETE_RECIPE', payload: json})
     }
   }
 
@@ -37,7 +39,7 @@ const WorkoutDetails = ({ workout }) => {
   }
 
   const handleUpdate = async () => {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/workouts/${workout._id}`, {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/recipes/${recipe._id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -47,39 +49,52 @@ const WorkoutDetails = ({ workout }) => {
     const json = await response.json()
   
     if (response.ok) {
-      dispatch({ type: 'UPDATE_WORKOUT', payload: json }) 
+      dispatch({ type: 'UPDATE_RECIPE', payload: json }) 
       setIsEditing(false)
     }
   }
 
   return (
-    <div className="workout-details">
+    <div className="recipe-details">
       {isEditing ? (
         <div>
           <input
             type="text"
-            value={formData.title}
-            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+            value={formData.name}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+          />
+          <textarea
+            value={formData.ingredients}
+            onChange={(e) => setFormData({ ...formData, ingredients: e.target.value })}
+          />
+          <textarea
+            value={formData.instructions}
+            onChange={(e) => setFormData({ ...formData, instructions: e.target.value })}
           />
           <input
             type="number"
-            value={formData.load}
-            onChange={(e) => setFormData({ ...formData, load: e.target.value })}
+            value={formData.prepTime}
+            onChange={(e) => setFormData({ ...formData, prepTime: e.target.value })}
           />
-          <input
-            type="number"
-            value={formData.reps}
-            onChange={(e) => setFormData({ ...formData, reps: e.target.value })}
-          />
+          <select
+            value={formData.difficulty}
+            onChange={(e) => setFormData({ ...formData, difficulty: e.target.value })}
+          >
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+          </select>
           <button onClick={handleUpdate}>Update</button>
           <button onClick={handleEditToggle}>Cancel</button>
         </div>
       ) : (
         <div>
-          <h4>{workout.title}</h4>
-          <p><strong>Load (kg): </strong>{workout.load}</p>
-          <p><strong>Number of reps: </strong>{workout.reps}</p>
-          <p>{formatDistanceToNow(new Date(workout.createdAt), { addSuffix: true })}</p>
+          <h4>{recipe.name}</h4>
+          <p><strong>Ingredients: </strong>{recipe.ingredients.join(', ')}</p>
+          <p><strong>Instructions: </strong>{recipe.instructions}</p>
+          <p><strong>Preparation Time: </strong>{recipe.prepTime} minutes</p>
+          <p><strong>Difficulty: </strong>{recipe.difficulty}</p>
+          <p>{formatDistanceToNow(new Date(recipe.createdAt), { addSuffix: true })}</p>
           <button onClick={handleEditToggle}>Edit</button>
           <span className="material-symbols-outlined" onClick={handleDelete}>delete</span>
         </div>
@@ -88,4 +103,4 @@ const WorkoutDetails = ({ workout }) => {
   )
 }
 
-export default WorkoutDetails
+export default RecipeDetails
