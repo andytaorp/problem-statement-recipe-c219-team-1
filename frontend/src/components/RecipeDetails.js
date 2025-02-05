@@ -39,13 +39,19 @@ const RecipeDetails = ({ recipe }) => {
   }
 
   const handleUpdate = async () => {
+    if (!user) {
+      return
+    }
+  
     const response = await fetch(`${process.env.REACT_APP_API_URL}/api/recipes/${recipe._id}`, {
       method: 'PATCH',
       headers: {
+        'Authorization': `Bearer ${user.token}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(formData),
     })
+  
     const json = await response.json()
   
     if (response.ok) {
@@ -53,6 +59,7 @@ const RecipeDetails = ({ recipe }) => {
       setIsEditing(false)
     }
   }
+  
 
   return (
     <div className="recipe-details">
