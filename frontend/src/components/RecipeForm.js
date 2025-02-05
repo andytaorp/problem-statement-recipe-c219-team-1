@@ -26,7 +26,7 @@ const RecipeForm = () => {
       ingredients: formData.ingredients.split(',').map(ing => ing.trim())
     }
 
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/recipe`, {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/recipes`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
